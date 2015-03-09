@@ -22,7 +22,7 @@ function varargout = spaceflight(varargin)
 
 % Edit the above text to modify the response to help spaceflight
 
-% Last Modified by GUIDE v2.5 08-Mar-2015 12:24:12
+% Last Modified by GUIDE v2.5 08-Mar-2015 22:35:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -82,6 +82,7 @@ handles.sites=parseXMLFile('TargetSites.xml');
 handles.sitecounter=1;
 handles.lat=handles.sites(handles.sitecounter).lat;
 handles.lon=handles.sites(handles.sitecounter).long;
+set(handles.weather,'String',weather(handles.sites(handles.sitecounter).target_name));
 set(handles.destinationtext,'String',handles.sites(handles.sitecounter).target_name);
 set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
@@ -381,6 +382,7 @@ handles.lat=handles.sites(handles.sitecounter).lat;
 handles.lon=handles.sites(handles.sitecounter).long;
 handles.countdowntimer=timeTilTarget(handles.lat,handles.lon);
 set(handles.countdown,'String',convertTime(handles.countdowntimer));
+set(handles.weather,'String',weather(handles.sites(handles.sitecounter).target_name));
 set(handles.destinationtext,'String',handles.sites(handles.sitecounter).target_name);
 set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
