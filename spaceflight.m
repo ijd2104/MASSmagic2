@@ -80,6 +80,8 @@ imshow('massmagiclogo.png');
 %%Show first Target and fill fields
 handles.sites=parseXMLFile('TargetSites.xml');
 handles.sitecounter=1;
+handles.lat=handles.sites(handles.sitecounter).lat;
+handles.lon=handles.sites(handles.sitecounter).long;
 set(handles.destinationtext,'String',handles.sites(handles.sitecounter).target_name);
 set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
@@ -368,6 +370,10 @@ if handles.sitecounter==length(handles.sites)
 else
     handles.sitecounter=handles.sitecounter+1;
 end
+handles.lat=handles.sites(handles.sitecounter).lat;
+handles.lon=handles.sites(handles.sitecounter).long;
+handles.countdowntimer=timeTilTarget(handles.lat,handles.lon);
+set(handles.countdown,'String',handles.countdowntimer);
 set(handles.destinationtext,'String',handles.sites(handles.sitecounter).target_name);
 set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
