@@ -8,6 +8,10 @@ function [ time ] = timeTilTarget(lat, lon)
     rise1 = strsplit(result,'"risetime":');
     rise2 = strsplit(char(rise1(2)),'}');
     risetime = str2double(rise2(1));
+    if isnan(risetime)
+        rise2 = strsplit(char(rise1(2)),',');
+        risetime = str2double(rise2(1));
+    end
     %convert unix time stamp to GMT. THIS CODE IS NOT USED BUT MIGHT BE IN
     %FUTURE, as we can just deal in unix time stamps
     
