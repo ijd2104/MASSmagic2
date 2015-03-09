@@ -57,7 +57,7 @@ dirlist=dir('Music');
 handles.playlist=dirlist(3:length(dirlist));
 handles.count=1;
 handles.pausebool=1;
-[y, Fs]=audioread(strcat('Music\',handles.playlist(handles.count).name));
+[y, Fs]=audioread(strcat('Music/',handles.playlist(handles.count).name));
 handles.player=audioplayer(y,Fs);
 
 %% Timer
@@ -410,7 +410,8 @@ function update_display(hObject,eventdata,hfigure)
 
 [y,x] = getISScoord();
 handles = guidata(hfigure);
-%handles.countdowntimer=handles.countdowntimer-3;
-%set(handles.countdown,'String',handles.countdowntimer);
+t = str2double(handles.countdown.String);
+t = t-3;
+set(handles.countdown,'String',t);
 set(handles.BigMap.Children(2),'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
 %guidata(hObject, handles);
