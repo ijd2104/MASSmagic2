@@ -22,7 +22,7 @@ function varargout = spaceflight(varargin)
 
 % Edit the above text to modify the response to help spaceflight
 
-% Last Modified by GUIDE v2.5 08-Mar-2015 22:35:18
+% Last Modified by GUIDE v2.5 08-Mar-2015 23:32:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -160,13 +160,22 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in checkbox1.
-function checkbox1_Callback(hObject, eventdata, handles)
-% hObject    handle to checkbox1 (see GCBO)
+% --- Executes on button press in imagebox. Google image function.
+function imagebox_Callback(hObject, eventdata, handles)
+% hObject    handle to imagebox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of checkbox1
+if (get(hObject,'Value') == get(hObject,'Max'))
+	googleimage(handles.sites(handles.sitecounter).target_name);
+    %display('Selected');
+   
+else
+    %display('Not selected');
+end
+
+% Hint: get(hObject,'Value') returns toggle state of imagebox
+
 
 
 
@@ -294,7 +303,7 @@ function checkbox4_Callback(hObject, eventdata, handles)
 
 if (get(hObject,'Value') == get(hObject,'Max'))
 	s = wiki(handles.sites(handles.sitecounter).target_name);
-    display('Selected');
+    %display('Selected');
     h = msgbox(s);
 else
     %display('Not selected');
