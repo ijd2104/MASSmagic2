@@ -424,7 +424,7 @@ function update_display(hObject,eventdata,hfigure)
 
 [y,x] = getISScoord();
 handles = guidata(hfigure);
-t2=subtractTime(handles.countdown.String,3);
+t2=subtractTime(handles.countdown.String,1);
 set(handles.BigMap.Children(2),'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
 set(handles.countdown,'String',t2);
 %guidata(hObject, handles);
