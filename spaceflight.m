@@ -410,8 +410,7 @@ function update_display(hObject,eventdata,hfigure)
 
 [y,x] = getISScoord();
 handles = guidata(hfigure);
-t = str2double(handles.countdown.String);
-t = t-3;
+t = str2double(handles.countdown.String)-3;
 set(handles.countdown,'String',t);
 set(handles.BigMap.Children(2),'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
 %guidata(hObject, handles);
