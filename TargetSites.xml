@@ -21,7 +21,7 @@
 			<TGeoCoordsEx alt="0" coordtype="gct_Geodetic" lat="0.781908" lon="-2.165954"/>
 			<PerimeterLocus/>
 		</wmc__TEOSite>
-		<wmc__TEOSite Category="Daily" CreatedJD="2456497.04579861" Format="1" Ident="205-006" LastModifiedJD="2456497.04579861" Nomenclature="Belize Barrier Reef Res." Notes="GMT: 15:42:31; Lens(es): 50, 180; mid-morning, partly cloudy, left of track">
+		<wmc__TEOSite Category="Daily" CreatedJD="2456497.04579861" Format="1" Ident="205-006" LastModifiedJD="2456497.04579861" Nomenclature="Belize Barrier Reef Res." Notes="GMT: 15:42:31; Lens(es): 50, 180; mid-morning, partly cloudy, left of track; Closest approach lat: 16.995474, lon: -88.019199 at 15:32:09">
 			<TGeoCoordsEx alt="0" coordtype="gct_Geodetic" lat="0.296706" lon="-1.560324"/>
 			<PerimeterLocus/>
 		</wmc__TEOSite>
