@@ -100,7 +100,7 @@ handles.output = hObject;
 % timer to update
 handles.timer = timer(...
     'ExecutionMode', 'fixedRate', ...   % Run timer repeatedly
-    'Period', 3, ...                % Initial period is 3 sec.
+    'Period', 1, ...                % Initial period is 1 sec.
     'TimerFcn', {@update_display,hObject}); % Specify callback
 
 start(handles.timer);
