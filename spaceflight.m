@@ -90,7 +90,7 @@ set(handles.targetlist,'String',targetstr);
 
 %%Timer Functionality and run timeTilTarget
 handles.countdowntimer=timeTilTarget(lat,lon);
-set(handles.countdown,'String',handles.countdowntimer);
+set(handles.countdown,'String',convertTime(handles.countdowntimer));
 
 %% Other
 % Choose default command line output for spaceflight
@@ -380,23 +380,13 @@ end
 handles.lat=handles.sites(handles.sitecounter).lat;
 handles.lon=handles.sites(handles.sitecounter).long;
 handles.countdowntimer=timeTilTarget(handles.lat,handles.lon);
-set(handles.countdown,'String',handles.countdowntimer);
+set(handles.countdown,'String',convertTime(handles.countdowntimer));
 set(handles.destinationtext,'String',handles.sites(handles.sitecounter).target_name);
 set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
 targetstr=strcat(num2str(handles.sitecounter),'/',num2str(length(handles.sites)));
 set(handles.targetlist,'String',targetstr);
 guidata(hObject,handles)
-
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over countdown.
-function countdown_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to countdown (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-[lat,lon] = getISScoord();
-handles.countdowntimer=timeTilTarget(lat,lon);
-set(handles.countdown,'String',handles.countdowntimer);
 
 % --- Executes during object creation, after setting all properties.
 function LilMap_CreateFcn(hObject, eventdata, handles)
@@ -423,7 +413,7 @@ function update_display(hObject,eventdata,hfigure)
 
 [y,x] = getISScoord();
 handles = guidata(hfigure);
-t = str2double(handles.countdown.String)-3;
-set(handles.countdown,'String',t);
+t2=subtractTime(handles.countdown.String,3);
 set(handles.BigMap.Children(2),'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
+set(handles.countdown,'String',t2);
 %guidata(hObject, handles);
