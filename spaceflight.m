@@ -285,12 +285,19 @@ function pushbutton5_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 
-% --- Executes on button press in checkbox4.
+% --- Executes on button press in checkbox4. Wiki function. 
 function checkbox4_Callback(hObject, eventdata, handles)
 % hObject    handle to checkbox4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+if (get(hObject,'Value') == get(hObject,'Max'))
+	s = wiki(handles.sites(handles.sitecounter).target_name);
+    display('Selected');
+    h = msgbox(s);
+else
+    %display('Not selected');
+end
 % Hint: get(hObject,'Value') returns toggle state of checkbox4
 
 
