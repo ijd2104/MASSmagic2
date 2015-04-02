@@ -6,7 +6,8 @@ function [figures] = searchForTerm(term)
         if isempty(strfind(tline,term))==0
             index=strfind(tline,'|');
             figures=[figures;tline(index+2:end)];
-            openfig(tline(index+2:end));
+            A = imread(tline(index+2:end));
+            figure, imshow(A,'Border','tight');
         end
         tline = fgetl(fid);
     end

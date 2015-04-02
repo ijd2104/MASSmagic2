@@ -22,7 +22,7 @@ function varargout = spaceflight(varargin)
 
 % Edit the above text to modify the response to help spaceflight
 
-% Last Modified by GUIDE v2.5 08-Mar-2015 23:32:02
+% Last Modified by GUIDE v2.5 02-Apr-2015 12:40:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -93,14 +93,12 @@ set(handles.targetlist,'String',targetstr);
 handles.countdowntimer=timeTilTarget(lat,lon);
 set(handles.countdown,'String',convertTime(handles.countdowntimer));
 
-<<<<<<< HEAD
 %Picture History
 text = fileread('directory.txt');
 if strcmp(text,'')==0
     handles.count=str2double(text(end-5));
 end
-=======
->>>>>>> parent of 809b1bd... Removed history gui added to reg gui. Can save image and take images, and search
+
 %% Other
 % Choose default command line output for spaceflight
 handles.output = hObject;
@@ -327,17 +325,12 @@ function checkbox5_Callback(hObject, eventdata, handles)
 
 % Hint: get(hObject,'Value') returns toggle state of checkbox5
 
-<<<<<<< HEAD
-=======
-
 % --- Executes on button press in pushbutton6.
 function pushbutton6_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
->>>>>>> parent of 809b1bd... Removed history gui added to reg gui. Can save image and take images, and search
 % --- Executes on button press in PlayButton.
 function PlayButton_Callback(hObject, eventdata, handles)
 % hObject    handle to PlayButton (see GCBO)
@@ -439,9 +432,6 @@ t2=subtractTime(handles.countdown.String,1);
 set(handles.BigMap.Children(2),'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
 set(handles.countdown,'String',t2);
 %guidata(hObject, handles);
-<<<<<<< HEAD
-
-
 
 function searchbox_Callback(hObject, eventdata, handles)
 % hObject    handle to searchbox (see GCBO)
@@ -470,7 +460,7 @@ function searchbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to searchbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-term=get(handles.searchbox,'String');
+term=get(handles.searchbox,'String')
 if isempty(term)==0
     searchForTerm(term);
 end
@@ -489,5 +479,3 @@ texttosave=strcat(w,d,n,l);
 texttosave=strrep(texttosave,'\n','');
 saveImage(handles.count,texttosave);
 guidata(hObject, handles);
-=======
->>>>>>> parent of 809b1bd... Removed history gui added to reg gui. Can save image and take images, and search
