@@ -1,4 +1,0 @@
-hello | images\1.fig
-hellooooo | images\2.fig
-ooooo | images\3.fig
-yoooellloo | images\4.fig
