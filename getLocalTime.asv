@@ -1,0 +1,11 @@
+function [ str ] = getLocalTime(lat,lon)
+    urlbuild=strcat('http://www.earthtools.org/timezone/',num2str(lat),'/',num2str(lon));
+    result=urlread(urlbuild);
+    rise1 = strsplit(result,'localtime');
+    rise2 = strsplit(char(rise1(2)),'}');
+    risetime = str2double(rise2(1));
+    if isnan(risetime)
+        rise2 = strsplit(char(rise1(2)),',');
+        risetime = str2double(rise2(1));
+    end
+end

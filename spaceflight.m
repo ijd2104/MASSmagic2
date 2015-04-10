@@ -22,7 +22,7 @@ function varargout = spaceflight(varargin)
 
 % Edit the above text to modify the response to help spaceflight
 
-% Last Modified by GUIDE v2.5 02-Apr-2015 12:40:02
+% Last Modified by GUIDE v2.5 10-Apr-2015 16:24:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -55,6 +55,7 @@ function spaceflight_OpeningFcn(hObject, eventdata, handles, varargin)
 %% Music player code
 dirlist=dir('Music');
 handles.playlist=dirlist(3:length(dirlist));
+handles.playlist=handles.playlist(randperm(size(handles.playlist,1)),:);
 handles.count=1;
 handles.pausebool=1;
 [y, Fs]=audioread(strcat('Music/',handles.playlist(handles.count).name));
@@ -88,6 +89,8 @@ set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
 targetstr=strcat(num2str(handles.sitecounter),'/',num2str(length(handles.sites)));
 set(handles.targetlist,'String',targetstr);
+str=getLocalTime(handles.lat,handles.lon);
+set(handles.localtime,'String',str);
 
 %%Timer Functionality and run timeTilTarget
 handles.countdowntimer=timeTilTarget(lat,lon);
@@ -96,7 +99,7 @@ set(handles.countdown,'String',convertTime(handles.countdowntimer));
 %Picture History
 text = fileread('directory.txt');
 if strcmp(text,'')==0
-    handles.count=str2double(text(end-5));
+    handles.pcount=str2double(text(end-6));
 end
 
 %% Other
@@ -375,6 +378,8 @@ handles.count=handles.count+1;
 if handles.count>length(handles.playlist)
     handles.count=1;
 end
+disp(handles.playlist);
+disp(handles.count);
 [y Fs]=audioread(strcat('Music\',handles.playlist(handles.count).name));
 handles.player=audioplayer(y,Fs);
 set(handles.songtitle,'String',handles.playlist(handles.count).name(1:length(handles.playlist(handles.count).name)-4));
@@ -401,6 +406,8 @@ set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
 targetstr=strcat(num2str(handles.sitecounter),'/',num2str(length(handles.sites)));
 set(handles.targetlist,'String',targetstr);
+str=getLocalTime(handles.lat,handles.lon);
+set(handles.localtime,'String',str);
 guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
@@ -441,7 +448,6 @@ function searchbox_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of searchbox as text
 %        str2double(get(hObject,'String')) returns contents of searchbox as a double
 
-
 % --- Executes during object creation, after setting all properties.
 function searchbox_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to searchbox (see GCBO)
@@ -460,7 +466,7 @@ function searchbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to searchbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-term=get(handles.searchbox,'String')
+term=get(handles.searchbox,'String');
 if isempty(term)==0
     searchForTerm(term);
 end
@@ -470,12 +476,22 @@ function takepicture_Callback(hObject, eventdata, handles)
 % hObject    handle to takepicture (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.count=handles.count+1;
+handles.pcount=handles.pcount+1;
 w=weather(handles.sites(handles.sitecounter).target_name);
 d=handles.sites(handles.sitecounter).target_name;
 n=handles.sites(handles.sitecounter).notes;
 l=handles.sites(handles.sitecounter).lenses;
 texttosave=strcat(w,d,n,l);
 texttosave=strrep(texttosave,'\n','');
-saveImage(handles.count,texttosave);
+saveImage(handles.pcount,texttosave);
 guidata(hObject, handles);
+
+
+% --- Executes on button press in refresh.
+function refresh_Callback(hObject, eventdata, handles)
+% hObject    handle to refresh (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+str=getLocalTime(handles.lat,handles.lon);
+set(handles.localtime,'String',str);
+guidata(hObject,handles);
