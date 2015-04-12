@@ -22,7 +22,7 @@ function varargout = spaceflight(varargin)
 
 % Edit the above text to modify the response to help spaceflight
 
-% Last Modified by GUIDE v2.5 10-Apr-2015 16:24:14
+% Last Modified by GUIDE v2.5 12-Apr-2015 13:09:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -139,26 +139,44 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 
-% --- Executes on button press in pushbutton3.
-function pushbutton3_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton3 (see GCBO)
+% --- Executes on button press in NewTarget.
+function NewTarget_Callback(hObject, eventdata, handles)
+% hObject    handle to NewTarget (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    
+    url1 = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+    url2 = '&result_type=administrative_area_level_1&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
+    lat = handles.NewLat.String;
+    lng = handles.NewLon.String;
+    target = strcat(url1,lat,',',lng,url2);
+    target = urlread(target);
+    target = strsplit(target,'"formatted_address" : "');
+    target = strsplit(target{2},'",');
+    target = target{1};
+    handles.NewTargetName.String = target;
+    site_no = numel(handles.sites)+1;
+    handles.sites(site_no).site_no = site_no;
+    handles.sites(site_no).target_name = target;
+    handles.sites(site_no).lat = lat;
+    handles.sites(site_no).long = lng;
+    handles.notes(site_no).notes = [];
+    handles.notes(site_no).lenses = [];
+    guidata(hObject,handles)
+
+    
+function NewLat_Callback(hObject, eventdata, handles)
+% hObject    handle to NewLat (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
-
-function edit2_Callback(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit2 as text
-%        str2double(get(hObject,'String')) returns contents of edit2 as a double
+% Hints: get(hObject,'String') returns contents of NewLat as text
+%        str2double(get(hObject,'String')) returns contents of NewLat as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
+function NewLat_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to NewLat (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -252,18 +270,18 @@ function checkbox3_Callback(hObject, eventdata, handles)
 
 
 
-function edit5_Callback(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
+function NewLon_Callback(hObject, eventdata, handles)
+% hObject    handle to NewLon (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit5 as text
-%        str2double(get(hObject,'String')) returns contents of edit5 as a double
+% Hints: get(hObject,'String') returns contents of NewLon as text
+%        str2double(get(hObject,'String')) returns contents of NewLon as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit5_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
+function NewLon_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to NewLon (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
