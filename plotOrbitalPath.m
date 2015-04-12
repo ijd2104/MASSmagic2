@@ -46,21 +46,9 @@ img = imread('MercatorProjection.jpg');
 [x2,y2] = mercatorProjection(data2(:,2),data2(:,1), imgW, imgH);
 imshow(img, 'InitialMag',100, 'Border','tight')
 hold on
-plot(x0, y0, 'or', 'MarkerSize',5, 'LineWidth',2.5)
+plot(x0, y0, 'oc', 'MarkerSize',5, 'LineWidth',2.5)
 plot(x1,y1,'--y','LineWidth',1.5)
 plot(x2,y2,'--y','LineWidth',1.5)
-
-sites = parseXMLFile(strcat(pwd,'\TargetSites.xml'));
-
-longitude = zeros(numel(sites),1);
-latitude = zeros(numel(sites),1);
-for i = 1:numel(sites)
-    lon3 = str2double(sites(i).long);
-    lat3 = str2double(sites(i).lat);
-    [longitude(i),latitude(i)] = mercatorProjection(lon3,lat3, imgW, imgH);
-end
-plot(longitude,latitude,'xm','MarkerSize',3,'LineWidth',2);
-plot(longitude(1),latitude(1),'xc','MarkerSize',3,'LineWidth',2);
 hold off
 
 end

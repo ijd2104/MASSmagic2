@@ -69,7 +69,8 @@ plot_google_map
 axes(handles.BigMap)
 %plot(handles.BigMap,plot_google_map)
 %plot(handles.BigMap,lon,lat,'or','MarkerSize',5,'LineWidth',2)
-plot(lon,lat,'or','MarkerSize',5,'LineWidth',2)
+plot(lon,lat,'oc','MarkerSize',5,'LineWidth',2)
+plot(15.86,45.45,'+r','MarkerSize',10,'LineWidth',2)
 
 %Little Map
     axes(handles.LilMap);
@@ -80,7 +81,22 @@ axes(handles.logo);
 imshow('massmagiclogo.png');
 
 %%Show first Target and fill fields
-handles.sites=parseXMLFile('TargetSites.xml');
+sites = parseXMLFile(strcat(pwd,'\TargetSites.xml'));
+
+longitude = zeros(numel(sites),1);
+latitude = zeros(numel(sites),1);
+for i = 1:numel(sites)
+    lon3 = str2double(sites(i).long);
+    lat3 = str2double(sites(i).lat);
+    [longitude(i),latitude(i)] = mercatorProjection(lon3,lat3, 773, 599);
+end
+axes(handles.LilMap)
+hold on
+plot(longitude,latitude,'xm','MarkerSize',3,'LineWidth',2);
+plot(longitude(1),latitude(1),'+r','MarkerSize',5,'LineWidth',2);
+hold off
+
+handles.sites=sites;
 handles.sitecounter=1;
 handles.lat=handles.sites(handles.sitecounter).lat;
 handles.lon=handles.sites(handles.sitecounter).long;
@@ -447,16 +463,23 @@ str=getLocalTime(handles.lat,handles.lon);
 set(handles.localtime,'String',str);
 
 %Update next target marker
-delete(findobj(handles.LilMap,'-depth',1,'Color',[0 1 1]));
+delete(findobj(handles.LilMap,'-depth',1,'Color',[1 0 0]));
 p = findobj(handles.LilMap,'-depth',1,'Color',[1 0 1]);
 x = p.XData;
 y = p.YData;
 s = handles.sitecounter;
 axes(handles.LilMap)
 hold on
-plot(x(s),y(s),'xc','MarkerSize',3,'LineWidth',2);
+plot(x(s),y(s),'+r','MarkerSize',5,'LineWidth',2);
 hold off
+
+%Update target in Big Map
+p = findobj(handles.BigMap,'-depth',1,'Color',[1 0 0]);
+x = str2double(handles.lon);
+y = str2double(handles.lat);
+set(p,'XData',x,'YData',y,'Marker','+','MarkerSize',10,'LineWidth',2);
 guidata(hObject,handles)
+
 
 % --- Executes during object creation, after setting all properties.
 function LilMap_CreateFcn(hObject, eventdata, handles)
@@ -484,7 +507,7 @@ function update_display(hObject,eventdata,hfigure)
 [y,x] = getISScoord();
 handles = guidata(hfigure);
 t2=subtractTime(handles.countdown.String,1);
-p = findobj(handles.BigMap,'-depth',1,'Color',[1 0 0]);
+p = findobj(handles.BigMap,'-depth',1,'Color',[0 1 1]);
 set(p,'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
 set(handles.countdown,'String',t2);
 
@@ -532,7 +555,7 @@ l=handles.sites(handles.sitecounter).lenses;
 texttosave=strcat(w,d,n,l);
 texttosave=strrep(texttosave,'\n','');
 saveImage(handles.pcount,texttosave);
-%guidata(hObject, handles);
+guidata(hObject, handles);
 
 
 % --- Executes on button press in refresh.
