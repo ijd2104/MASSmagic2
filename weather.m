@@ -19,5 +19,6 @@ function [currentweather] = weather(S)
             currentweather = currentweather(2:end-1);
         end
     catch
+        currentweather = ' ';
     end
 end

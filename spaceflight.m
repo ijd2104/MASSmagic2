@@ -61,18 +61,19 @@ handles.pausebool=1;
 [y, Fs]=audioread(strcat('Music/',handles.playlist(handles.count).name));
 handles.player=audioplayer(y,Fs);
 
-%% Timer
+%% Plot maps
 [lat,lon] = getISScoord();
 
 %Big Map
-set(handles.BigMap,'XLim',[lon-45,lon+45],'YLim',[lat-21,lat+21])
-plot(handles.BigMap,plot_google_map)
-plot(handles.BigMap,lon,lat,'or','MarkerSize',5,'LineWidth',2)
+plot_google_map
+axes(handles.BigMap)
+%plot(handles.BigMap,plot_google_map)
+%plot(handles.BigMap,lon,lat,'or','MarkerSize',5,'LineWidth',2)
+plot(lon,lat,'or','MarkerSize',5,'LineWidth',2)
 
 %Little Map
-ax = handles.LilMap;
-plotOrbitalPath(ax)
-%plot(handles.LilMap,plotOrbitalPath)
+    axes(handles.LilMap);
+    plotOrbitalPath(lat);
 
 %% Logo
 axes(handles.logo);
@@ -144,47 +145,43 @@ function NewTarget_Callback(hObject, eventdata, handles)
 % hObject    handle to NewTarget (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-    
-    url1 = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-    localidad = '&result_type=locality&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
-    estado = '&result_type=administrative_area_level_1&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
-    lat = handles.NewLat.String;
-    lng = handles.NewLon.String;
-    target = strcat(url1,lat,',',lng,localidad);
+
+localidad = '&result_type=locality&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
+estado = '&result_type=administrative_area_level_1&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
+url1 = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+lat = handles.NewLat.String;
+lng = handles.NewLon.String;
+target = strcat(url1,lat,',',lng,localidad);
+target = urlread(target);
+load errcode
+if strcmp(target,errcode)
+    target = strcat(url1,lat,',',lng,estado);
     target = urlread(target);
-    target = strsplit(target,'"formatted_address" : "');
-    try
-        target = strsplit(target{2},'",');
-        target = target{1};
-        handles.NewTargetName.String = target;
-        site_no = numel(handles.sites)+1;
-        handles.sites(site_no).site_no = site_no;
-        handles.sites(site_no).target_name = target;
-        handles.sites(site_no).lat = lat;
-        handles.sites(site_no).long = lng;
-        handles.notes(site_no).notes = [];
-        handles.notes(site_no).lenses = [];
-        guidata(hObject,handles)
-    catch
-        target = strcat(url1,lat,',',lng,estado);
-        target = urlread(target);
-        target = strsplit(target,'"formatted_address" : "'); 
-        try
-            target = strsplit(target{2},'",');
-            target = target{1};
-            handles.NewTargetName.String = target;
-            site_no = numel(handles.sites)+1;
-            handles.sites(site_no).site_no = site_no;
-            handles.sites(site_no).target_name = target;
-            handles.sites(site_no).lat = lat;
-            handles.sites(site_no).long = lng;
-            handles.notes(site_no).notes = [];
-            handles.notes(site_no).lenses = [];
-            guidata(hObject,handles)
-        catch
-            handles.NewTargetName.String = 'Ocean / Invalid';
-        end
+    if strcmp(target,errcode)
+        handles.NewTargetName.String = 'Ocean / Invalid';
+        return
     end
+end
+target = strsplit(target,'"formatted_address" : "');
+
+target = strsplit(target{2},'",');
+target = target{1};
+handles.NewTargetName.String = target;
+site_no = numel(handles.sites)+1;
+handles.sites(site_no).site_no = site_no;
+handles.sites(site_no).target_name = target;
+handles.sites(site_no).lat = lat;
+handles.sites(site_no).long = lng;
+handles.notes(site_no).notes = [];
+handles.notes(site_no).lenses = [];
+
+%Add new target to little map
+p = findobj(handles.LilMap,'-depth',1,'Color',[1 0 1]);
+lng = str2double(lng);
+lat = str2double(lat);
+[lng,lat] = mercatorProjection(lng, lat, 773, 599);
+set(p,'XData',[p.XData lng],'YData',[p.YData lat]);
+guidata(hObject,handles)
 
     
 function NewLat_Callback(hObject, eventdata, handles)
@@ -387,13 +384,13 @@ else
     if handles.count>length(handles.playlist)
         handles.count=1;
     end
-    [y Fs]=audioread(strcat('Music\',handles.playlist(handles.count).name));
+    [y,Fs]=audioread(strcat('Music\',handles.playlist(handles.count).name));
     handles.player=audioplayer(y,Fs);
     set(handles.songtitle,'String',handles.playlist(handles.count).name(1:length(handles.playlist(handles.count).name)-4));
     play(handles.player);
     handles.count=handles.count+1;
 end
-guidata(hObject,handles);
+%guidata(hObject,handles);
 
 
 % --- Executes on button press in PauseButton.
@@ -403,7 +400,7 @@ function PauseButton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.pausebool=1;
 handles.player.pause;
-guidata(hObject,handles)
+%guidata(hObject,handles)
 
 % --- Executes on button press in SkipButton.
 function SkipButton_Callback(hObject, eventdata, handles)
@@ -418,9 +415,9 @@ handles.count=handles.count+1;
 if handles.count>length(handles.playlist)
     handles.count=1;
 end
-disp(handles.playlist);
-disp(handles.count);
-[y Fs]=audioread(strcat('Music\',handles.playlist(handles.count).name));
+%disp(handles.playlist);
+%disp(handles.count);
+[y,Fs]=audioread(strcat('Music\',handles.playlist(handles.count).name));
 handles.player=audioplayer(y,Fs);
 set(handles.songtitle,'String',handles.playlist(handles.count).name(1:length(handles.playlist(handles.count).name)-4));
 play(handles.player);
@@ -448,6 +445,17 @@ targetstr=strcat(num2str(handles.sitecounter),'/',num2str(length(handles.sites))
 set(handles.targetlist,'String',targetstr);
 str=getLocalTime(handles.lat,handles.lon);
 set(handles.localtime,'String',str);
+
+%Update next target marker
+delete(findobj(handles.LilMap,'-depth',1,'Color',[0 1 1]));
+p = findobj(handles.LilMap,'-depth',1,'Color',[1 0 1]);
+x = p.XData;
+y = p.YData;
+s = handles.sitecounter;
+axes(handles.LilMap)
+hold on
+plot(x(s),y(s),'xc','MarkerSize',3,'LineWidth',2);
+hold off
 guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
@@ -476,9 +484,9 @@ function update_display(hObject,eventdata,hfigure)
 [y,x] = getISScoord();
 handles = guidata(hfigure);
 t2=subtractTime(handles.countdown.String,1);
-set(handles.BigMap.Children(2),'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
+p = findobj(handles.BigMap,'-depth',1,'Color',[1 0 0]);
+set(p,'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
 set(handles.countdown,'String',t2);
-%guidata(hObject, handles);
 
 function searchbox_Callback(hObject, eventdata, handles)
 % hObject    handle to searchbox (see GCBO)
@@ -524,7 +532,7 @@ l=handles.sites(handles.sitecounter).lenses;
 texttosave=strcat(w,d,n,l);
 texttosave=strrep(texttosave,'\n','');
 saveImage(handles.pcount,texttosave);
-guidata(hObject, handles);
+%guidata(hObject, handles);
 
 
 % --- Executes on button press in refresh.
@@ -534,4 +542,4 @@ function refresh_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 str=getLocalTime(handles.lat,handles.lon);
 set(handles.localtime,'String',str);
-guidata(hObject,handles);
+%guidata(hObject,handles);

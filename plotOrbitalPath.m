@@ -1,9 +1,6 @@
-function plotOrbitalPath(ax)
+function plotOrbitalPath(lat1)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
-axes(ax);
-[lat1,lon1] = getISScoord();
-pause(1)
 [lat2,lon2] = getISScoord();
 
 %normalize
@@ -54,13 +51,16 @@ plot(x1,y1,'--y','LineWidth',1.5)
 plot(x2,y2,'--y','LineWidth',1.5)
 
 sites = parseXMLFile(strcat(pwd,'\TargetSites.xml'));
-for i = 1:numel(sites)
-    lon = str2double(sites(i).long);
-    lat = str2double(sites(i).lat);
-    [lon,lat] = mercatorProjection(lon,lat, imgW, imgH);
-    plot(lon,lat,'xm','MarkerSize',3,'LineWidth',2)
-end
 
+longitude = zeros(numel(sites),1);
+latitude = zeros(numel(sites),1);
+for i = 1:numel(sites)
+    lon3 = str2double(sites(i).long);
+    lat3 = str2double(sites(i).lat);
+    [longitude(i),latitude(i)] = mercatorProjection(lon3,lat3, imgW, imgH);
+end
+plot(longitude,latitude,'xm','MarkerSize',3,'LineWidth',2);
+plot(longitude(1),latitude(1),'xc','MarkerSize',3,'LineWidth',2);
 hold off
 
 end
