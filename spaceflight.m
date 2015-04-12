@@ -146,23 +146,45 @@ function NewTarget_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
     
     url1 = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-    url2 = '&result_type=administrative_area_level_1&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
+    localidad = '&result_type=locality&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
+    estado = '&result_type=administrative_area_level_1&key=AIzaSyB58vqRxPw0e8s8nPNl7QyratJss20c0mY';
     lat = handles.NewLat.String;
     lng = handles.NewLon.String;
-    target = strcat(url1,lat,',',lng,url2);
+    target = strcat(url1,lat,',',lng,localidad);
     target = urlread(target);
     target = strsplit(target,'"formatted_address" : "');
-    target = strsplit(target{2},'",');
-    target = target{1};
-    handles.NewTargetName.String = target;
-    site_no = numel(handles.sites)+1;
-    handles.sites(site_no).site_no = site_no;
-    handles.sites(site_no).target_name = target;
-    handles.sites(site_no).lat = lat;
-    handles.sites(site_no).long = lng;
-    handles.notes(site_no).notes = [];
-    handles.notes(site_no).lenses = [];
-    guidata(hObject,handles)
+    try
+        target = strsplit(target{2},'",');
+        target = target{1};
+        handles.NewTargetName.String = target;
+        site_no = numel(handles.sites)+1;
+        handles.sites(site_no).site_no = site_no;
+        handles.sites(site_no).target_name = target;
+        handles.sites(site_no).lat = lat;
+        handles.sites(site_no).long = lng;
+        handles.notes(site_no).notes = [];
+        handles.notes(site_no).lenses = [];
+        guidata(hObject,handles)
+    catch
+        target = strcat(url1,lat,',',lng,estado);
+        target = urlread(target);
+        target = strsplit(target,'"formatted_address" : "'); 
+        try
+            target = strsplit(target{2},'",');
+            target = target{1};
+            handles.NewTargetName.String = target;
+            site_no = numel(handles.sites)+1;
+            handles.sites(site_no).site_no = site_no;
+            handles.sites(site_no).target_name = target;
+            handles.sites(site_no).lat = lat;
+            handles.sites(site_no).long = lng;
+            handles.notes(site_no).notes = [];
+            handles.notes(site_no).lenses = [];
+            guidata(hObject,handles)
+        catch
+            handles.NewTargetName.String = 'Ocean / Invalid';
+        end
+    end
 
     
 function NewLat_Callback(hObject, eventdata, handles)

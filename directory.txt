@@ -2,3 +2,4 @@ ClearPristina, Kosovo early morning, clear, near nadir180, 400 | images\2.png
 CloudsZagreb, Croatia early morning, clear, near nadir180, 400 | images\3.png
 Andrews Forest, Oregon early morning, clear, nadir400, 800 | images\4.png
 RainZagreb, Croatia early morning, clear, near nadir180, 400 | images\5.png
+CloudsGuadalajara, Jalisco, Mexico | images\NaN.png
