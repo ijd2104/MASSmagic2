@@ -19,10 +19,11 @@ function varargout = spaceflight(varargin)
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
+%Authors: Imer del Cid, Tony Hung, Kelly Liu, Sophie Qian, Edward Zhang
 
 % Edit the above text to modify the response to help spaceflight
 
-% Last Modified by GUIDE v2.5 12-Apr-2015 13:09:36
+% Last Modified by GUIDE v2.5 12-Apr-2015 23:42:43
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -74,7 +75,17 @@ plot(15.86,45.45,'+r','MarkerSize',10,'LineWidth',2)
 
 %Little Map
     axes(handles.LilMap);
-    plotOrbitalPath(lat);
+    img = imread('MercatorProjection.jpg');
+    imgH = 599;
+    imgW = 773;
+    imshow(img, 'InitialMag',100, 'Border','tight')
+    [x0,y0] = mercatorProjection(lon,lat, imgW, imgH);  
+    [x1,x2,y1,y2] = plotOrbitalPath(lat);
+    hold on
+    plot(x0, y0, 'oc', 'MarkerSize',5, 'LineWidth',2)
+    plot(x1,y1,'--y','LineWidth',1.5)
+    plot(x2,y2,'--y','LineWidth',1.5)
+    hold off
 
 %% Logo
 axes(handles.logo);
@@ -507,6 +518,7 @@ function update_display(hObject,eventdata,hfigure)
 handles = guidata(hfigure);
 t2=subtractTime(handles.countdown.String,1);
 s = strsplit(t2,':');
+t = str2double(s(2));
 s = str2double(s(3));
 if ~rem(s,4)
     [y,x] = getISScoord();
@@ -516,7 +528,13 @@ if ~rem(s,4)
         [x,y] = mercatorProjection(x,y, 773, 599);
         p = findobj(handles.LilMap,'-depth',1,'Color',[0 1 1]);
         set(p,'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
-    end
+        if s==0 && ~rem(t,5)
+            [x1,x2,y1,y2] = plotOrbitalPath(y);
+             p = findobj(handles.LilMap,'-depth',1,'Color',[1 1 0]);
+             set(p(1),'XData',x1,'YData',y1,'LineStyle','--','LineWidth',1.5);
+             set(p(2),'XData',x2,'YData',y2,'LineStyle','--','LineWidth',1.5);
+        end
+    end 
 end
 set(handles.countdown,'String',t2);
 
@@ -575,3 +593,22 @@ function refresh_Callback(hObject, eventdata, handles)
 str=getLocalTime(handles.lat,handles.lon);
 set(handles.localtime,'String',str);
 %guidata(hObject,handles);
+
+
+% --- Executes during object deletion, before destroying properties.
+function BigMap_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to BigMap (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+stop(handles.timer)
+disp('Thanks for using MASSmagic!')
+guidata(hObject, handles);
+
+% --- Executes during object deletion, before destroying properties.
+function LilMap_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to LilMap (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+stop(handles.timer)
+disp('Thanks for using MASSmagic!')
+guidata(hObject, handles);
