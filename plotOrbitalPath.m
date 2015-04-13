@@ -3,23 +3,27 @@ function plotOrbitalPath(lat1)
 %   Detailed explanation goes here
 [lat2,lon2] = getISScoord();
 
+[xo,yo] = mercatorProjection(lon2,lat2, 773, 599);
 %normalize
 lat1 = lat1/51.8;
 lat2 = lat2/51.8;
 
 if lat2<lat1
-    if lat2<0
-        t = -pi+asin(lat2);
-    else
-        t = pi-asin(lat2);
-    end
+    t = pi-asin(lat2);
+%     if lat2<0
+%         t = pi-asin(lat2);
+%     else
+%         t = pi-asin(lat2);
+%     end
 else
     t = asin(lat2);
 end
 
 x = t-pi:2*pi/99:t+pi; %100 points
+%x = sin(x);
+
 x = 51.8*sin(x);
-x0 = 51.8*sin(t);
+%x0 = 51.8*sin(t);
 
 m = 0.061791;
 t = lon2/m;
@@ -35,18 +39,19 @@ else
     i = find(~H,1);
 end
 y = m*y;
-y0 = m*t;
+%y0 = m*t;
 
 data1 = [x(1:i-1)' y(1:i-1)'];
 data2 = [x(i:end)' y(i:end)'];
 img = imread('MercatorProjection.jpg');
 [imgH,imgW,~] = size(img);
-[x0,y0] = mercatorProjection(y0,x0, imgW, imgH);
+%[x0,y0] = mercatorProjection(y0,x0, imgW, imgH);
 [x1,y1] = mercatorProjection(data1(:,2),data1(:,1), imgW, imgH);
 [x2,y2] = mercatorProjection(data2(:,2),data2(:,1), imgW, imgH);
 imshow(img, 'InitialMag',100, 'Border','tight')
 hold on
-plot(x0, y0, 'oc', 'MarkerSize',5, 'LineWidth',2.5)
+plot(xo, yo, 'oc', 'MarkerSize',5, 'LineWidth',2)
+%plot(x0, y0, 'ok', 'MarkerSize',5, 'LineWidth',2)
 plot(x1,y1,'--y','LineWidth',1.5)
 plot(x2,y2,'--y','LineWidth',1.5)
 hold off

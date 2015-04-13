@@ -507,8 +507,17 @@ function update_display(hObject,eventdata,hfigure)
 [y,x] = getISScoord();
 handles = guidata(hfigure);
 t2=subtractTime(handles.countdown.String,1);
-p = findobj(handles.BigMap,'-depth',1,'Color',[0 1 1]);
-set(p,'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
+s = strsplit(t2,':');
+s = str2double(s(3));
+if ~rem(s,4)
+    p = findobj(handles.BigMap,'-depth',1,'Color',[0 1 1]);
+    set(p,'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
+    if ~rem(s,12)
+        [x,y] = mercatorProjection(x,y, 773, 599);
+        p = findobj(handles.LilMap,'-depth',1,'Color',[0 1 1]);
+        set(p,'XData',x,'YData',y,'Marker','o','MarkerSize',5,'LineWidth',2);
+    end
+end
 set(handles.countdown,'String',t2);
 
 function searchbox_Callback(hObject, eventdata, handles)
