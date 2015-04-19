@@ -377,9 +377,17 @@ function checkbox4_Callback(hObject, eventdata, handles)
 if (get(hObject,'Value') == get(hObject,'Max'))
 	s = wiki(handles.sites(handles.sitecounter).target_name);
     %display('Selected');
-    h = msgbox(s);
+    myicon = imread('massmagiclogo.png');
+    h = msgbox(s, 'Wikipedia summary', 'custom', myicon);
+    ah = get( h, 'CurrentAxes' );
+    ch = get( ah, 'Children' );
+    set( ch, 'FontSize', 20 );
+    % need to resize the msgbox object to accommodate new FontSizes
+    %pos = get( h, 'Position' ); % msgbox current position
+    %pos = pos + delta; % change size of msgbox
+    %set( msgHandle, 'Position', pos ); % set new position
 else
-    %display('Not selected');
+    display('Not selected');
 end
 % Hint: get(hObject,'Value') returns toggle state of checkbox4
 
