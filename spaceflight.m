@@ -385,7 +385,7 @@ if (get(hObject,'Value') == get(hObject,'Max'))
     h = msgbox(s, 'Wikipedia summary', 'custom', myicon);
     ah = get( h, 'CurrentAxes' );
     ch = get( ah, 'Children' );
-    set( ch, 'FontSize', 20 );
+    %set( ch, 'FontSize', 20 );
     %ah = get( h, 'CurrentAxes' );
     %ch = get( ah, 'Children' );
     %set( ch, 'FontSize', 20 );

@@ -11,7 +11,7 @@ html = urlread(['http://images.google.com/images?q=' urlstr]);
 %display(moon);
 beg = findstr('src="http:',html);
 begend = html(beg:beg+200);
-display(begend);
+%display(begend);
 fin = findstr('" width="',begend);
 %disp(beg);
 %disp(fin);
