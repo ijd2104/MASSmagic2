@@ -548,6 +548,11 @@ if ~rem(s,4)
              p = findobj(handles.LilMap,'-depth',1,'Color',[1 1 0]);
              set(p(1),'XData',x1,'YData',y1,'LineStyle','--','LineWidth',1.5);
              set(p(2),'XData',x2,'YData',y2,'LineStyle','--','LineWidth',1.5);
+             p = findobj(handles.LilMap,'-depth',1,'Color',[0 0 1]);
+             set(p(1),'XData',x1,'YData',y1-25);
+             set(p(2),'XData',x2,'YData',y2-25);
+             set(p(3),'XData',x1,'YData',y1+25);
+             set(p(4),'XData',x2,'YData',y2+25);
         end
     end 
 end
