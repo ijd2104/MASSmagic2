@@ -56,6 +56,7 @@ end
 %be the input is wrong format or not spelled correctly.
 if ~status
     error('WIKI: Unable to read URL. Article may exist, but input was incorrect. Please check input as program made no attempt to correct it.')
+    
 end
 
 
@@ -87,12 +88,13 @@ if ((~isempty(beg1))&&(~isempty(beg2)))&&(beg1(1)<beg3(1))
             ind=0;
         end
     end
-    beg4=findstr(temp,'<p>');
+    beg4=findstr(temp,'<p><b>');
     temp=temp(beg4(1):end);
 else
     temp=orig(beg3(1):end);
 end
 %------------
+%ldisplay(temp);
 
 
 
@@ -115,8 +117,8 @@ ti4=findstr(temp,str4);
 ti5=findstr(temp,str5);
 ti6=findstr(temp,str6);
 ti7=findstr(temp,str7);
-%minind=findstr(temp,'Contents')-1; %Sophie's added step: only want the first paragraph.
-minind=findstr(temp,'</p>')-1;
+minind=findstr(temp,'Contents')-1; %Sophie's added step: only want the first paragraph.
+%minind=findstr(temp,'</p>')-1;
 if ~isempty(minind)
     temp=temp(1:minind);
     %else, use full string and do nothing
@@ -168,7 +170,7 @@ q=wrapstring2(s,5);
 %s: Not wrapped
 %q: Wrapped according to Command Window Size
 %S: Output
-S=s;
+S=s; %No wrapping
 
 
 end
