@@ -89,6 +89,9 @@ if ((~isempty(beg1))&&(~isempty(beg2)))&&(beg1(1)<beg3(1))
         end
     end
     beg4=findstr(temp,'<p><b>');
+    if isempty(beg4)
+        beg4=findstr(temp,'<p>The <b>');
+    end
     temp=temp(beg4(1):end);
 else
     temp=orig(beg3(1):end);
