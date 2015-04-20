@@ -23,7 +23,7 @@ function varargout = spaceflight(varargin)
 
 % Edit the above text to modify the response to help spaceflight
 
-% Last Modified by GUIDE v2.5 12-Apr-2015 23:59:12
+% Last Modified by GUIDE v2.5 19-Apr-2015 20:47:19
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,6 +84,10 @@ plot(15.86,45.45,'+r','MarkerSize',10,'LineWidth',2)
     hold on
     plot(x0, y0, 'oc', 'MarkerSize',5, 'LineWidth',2)
     plot(x1,y1,'--y','LineWidth',1.5)
+    plot(x1,y1+25,'-b')
+    plot(x2,y2+25,'-b')
+    plot(x1,y1-25,'-b')
+    plot(x2,y2-25,'-b')
     plot(x2,y2,'--y','LineWidth',1.5)
     hold off
 
@@ -377,9 +381,17 @@ function checkbox4_Callback(hObject, eventdata, handles)
 if (get(hObject,'Value') == get(hObject,'Max'))
 	s = wiki(handles.sites(handles.sitecounter).target_name);
     %display('Selected');
-    h = msgbox(s);
+    myicon = imread('massmagiclogo.png');
+    h = msgbox(s, 'Wikipedia summary', 'custom', myicon);
+    ah = get( h, 'CurrentAxes' );
+    ch = get( ah, 'Children' );
+    set( ch, 'FontSize', 20 );
+    % need to resize the msgbox object to accommodate new FontSizes
+    %pos = get( h, 'Position' ); % msgbox current position
+    %pos = pos + delta; % change size of msgbox
+    %set( msgHandle, 'Position', pos ); % set new position
 else
-    %display('Not selected');
+    display('Not selected');
 end
 % Hint: get(hObject,'Value') returns toggle state of checkbox4
 
@@ -612,3 +624,10 @@ function LilMap_DeleteFcn(hObject, eventdata, handles)
 stop(handles.timer)
 disp('Thanks for using MASSmagic!')
 guidata(hObject, handles);
+
+
+% --- Executes on button press in pushbutton15.
+function pushbutton15_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

@@ -115,14 +115,15 @@ ti4=findstr(temp,str4);
 ti5=findstr(temp,str5);
 ti6=findstr(temp,str6);
 ti7=findstr(temp,str7);
-minind=findstr(temp,'Contents')-1;
-%minind=min([ti1 ti2 ti3 ti4 ti5 ti6 ti7])-1;
+%minind=findstr(temp,'Contents')-1; %Sophie's added step: only want the first paragraph.
+minind=findstr(temp,'</p>')-1;
 if ~isempty(minind)
     temp=temp(1:minind);
     %else, use full string and do nothing
 end
-%---------
+%---------x
 
+%display(temp);
 
 
 %REMOVE HTML AND WIKIPEDIA TAGS
@@ -159,7 +160,7 @@ s=regexprep(s, '\n\s', '\n\n');
 
 
 %For ease of reading, replace spaces with new lines - if need be -
-%according to size of Command Window for wrapping text to output
+%according to size of Command Window for wrapping text to output%
 q=wrapstring2(s,5);
 
 
@@ -167,7 +168,7 @@ q=wrapstring2(s,5);
 %s: Not wrapped
 %q: Wrapped according to Command Window Size
 %S: Output
-S=q;
+S=s;
 
 
 end
