@@ -383,15 +383,12 @@ if (get(hObject,'Value') == get(hObject,'Max'))
     %display('Selected');
     myicon = imread('massmagiclogo.png');
     h = msgbox(s, 'Wikipedia summary', 'custom', myicon);
-<<<<<<< HEAD
     ah = get( h, 'CurrentAxes' );
     ch = get( ah, 'Children' );
     set( ch, 'FontSize', 20 );
-=======
     %ah = get( h, 'CurrentAxes' );
     %ch = get( ah, 'Children' );
     %set( ch, 'FontSize', 20 );
->>>>>>> origin/master
     % need to resize the msgbox object to accommodate new FontSizes
     %pos = get( h, 'Position' ); % msgbox current position
     %pos = pos + delta; % change size of msgbox
