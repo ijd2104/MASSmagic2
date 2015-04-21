@@ -1,43 +1,33 @@
 function googleimage(name)
 
-%web(['http://images.google.com/images?q=' argin]);
     hexcode=dec2hex(double(name));
     percents=repmat('%',size(hexcode,1),1);
     urlstr=sprintf('%s',strcat(percents,hexcode)');
-    urlstr = strcat(urlstr,'&imgsz=large');
-%html = urlread(['http://images.google.com/images?q=' urlstr]);
+    urlstr = strcat(urlstr,'&imgsz=xlarge&rsz=8');
 html = urlread(['http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=' urlstr]);
-%display(html);
-%html = urlread(['http://www.bing.com/images/search?q=' urlstr]);
-%moon = findstr('',html);
-%display(moon);
-%beg = findstr('src="http:',html);
-beg = findstr('"url":"',html);
-%begend = html(beg:beg+200);
-begend = html(beg+7:end);
-%display(begend);
-%fin = findstr('" width="',begend);
-fin = findstr('","',begend);
-%disp(beg);
-%disp(fin);
-%beg1 = beg(1);
-%disp(beg);
-%bege = beg+200;
-%disp(html(beg:bege));
-%disp(html(beg+5:fin-1));
-%filename= websave('urlimage', ['http://images.google.com/images?q=' argin]);
+
+begend = html;
+beg = strfind(begend,'"url":"');
+i = randi(numel(beg));
+begend = html(beg(i)+7:end);
+fin = strfind(begend,'","');
+
 try
     A = imread(begend(1:fin-1));
 catch
+    begend = html;
+    beg = strfind(begend,'"url":"');
+    i = randi(numel(beg));
+    begend = html(beg(i)+7:end);
+    fin = strfind(begend,'","');
     try
-        beg = findstr('"url":"',begend);
-        begend = begend(beg+7:end);
-        fin = findstr('","',begend);
-        A = imread(begend(1:fin-1));
+       A = imread(begend(1:fin-1)); 
     catch
-        beg = findstr('"url":"',begend);
-        begend = begend(beg+7:end);
-        fin = findstr('","',begend);
+        begend = html;
+        beg = strfind(begend,'"url":"');
+        i = randi(numel(beg));
+        begend = html(beg(i)+7:end);
+        fin = strfind(begend,'","');
         A = imread(begend(1:fin-1));
     end
 end
