@@ -120,8 +120,8 @@ ti4=findstr(temp,str4);
 ti5=findstr(temp,str5);
 ti6=findstr(temp,str6);
 ti7=findstr(temp,str7);
-minind=findstr(temp,'Contents')-1; %Sophie's added step: only want the first paragraph.
-%minind=findstr(temp,'</p>')-1;
+%minind=findstr(temp,'Contents')-1; %Sophie's added step: only want the first paragraph.
+minind=findstr(temp,'</p>')-1;
 if ~isempty(minind)
     temp=temp(1:minind);
     %else, use full string and do nothing
