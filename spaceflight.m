@@ -203,8 +203,9 @@ handles.sites(site_no).site_no = site_no;
 handles.sites(site_no).target_name = target;
 handles.sites(site_no).lat = lat;
 handles.sites(site_no).long = lng;
-handles.notes(site_no).notes = [];
-handles.notes(site_no).lenses = [];
+lenses = [100 180 200 300 400 440 480 800];
+handles.sites(site_no).notes = [];
+handles.sites(site_no).lenses = num2str([lenses(randi(numel(lenses))),lenses(randi(numel(lenses)))]);
 
 targetstr=strcat(num2str(handles.sitecounter),'/',num2str(length(handles.sites)));
 set(handles.targetlist,'String',targetstr);
