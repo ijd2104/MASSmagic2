@@ -604,7 +604,7 @@ function takepicture_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.pcount=handles.pcount+1;
-w=weather(handles.sites(handles.sitecounter).target_name);
+w=weather(handles.lat,handles.lon);
 d=handles.sites(handles.sitecounter).target_name;
 n=handles.sites(handles.sitecounter).notes;
 l=handles.sites(handles.sitecounter).lenses;
