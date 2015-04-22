@@ -206,6 +206,9 @@ handles.sites(site_no).long = lng;
 handles.notes(site_no).notes = [];
 handles.notes(site_no).lenses = [];
 
+targetstr=strcat(num2str(handles.sitecounter),'/',num2str(length(handles.sites)));
+set(handles.targetlist,'String',targetstr);
+
 %Add new target to little map
 p = findobj(handles.LilMap,'-depth',1,'Color',[1 0 1]);
 lng = str2double(lng);
