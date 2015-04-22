@@ -115,9 +115,9 @@ handles.sites=sites;
 handles.sitecounter=1;
 handles.lat=handles.sites(handles.sitecounter).lat;
 handles.lon=handles.sites(handles.sitecounter).long;
-
-set(handles.weather,'String',weather(handles.lat,handles.lon));
-
+targetname = handles.sites(handles.sitecounter).target_name;
+targetname = 
+set(handles.weather,'String',weather(handles.sites(handles.sitecounter).target_name));
 set(handles.destinationtext,'String',handles.sites(handles.sitecounter).target_name);
 set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);
@@ -485,10 +485,7 @@ handles.lat=handles.sites(handles.sitecounter).lat;
 handles.lon=handles.sites(handles.sitecounter).long;
 handles.countdowntimer=timeTilTarget(handles.lat,handles.lon);
 set(handles.countdown,'String',convertTime(handles.countdowntimer));
-
-set(handles.weather,'String',weather(handles.lat,handles.lon));
-
-%set(handles.weather,'String',weather(handles.sites(handles.sitecounter).target_name));
+set(handles.weather,'String',weather(handles.sites(handles.sitecounter).target_name));
 set(handles.destinationtext,'String',handles.sites(handles.sitecounter).target_name);
 set(handles.notestext,'String',handles.sites(handles.sitecounter).notes);
 set(handles.lenstext,'String',handles.sites(handles.sitecounter).lenses);

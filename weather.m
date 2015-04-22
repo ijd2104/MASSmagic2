@@ -1,8 +1,8 @@
-function [currentweather] = weather(S)
+function [currentweather] = weather(lat,lon)
     %This function calls the weather from the the target destination
-    S(ismember(S,' ')) = [];
+    %S(ismember(S,' ')) = [];
     
-    urlbuild=strcat('http://api.openweathermap.org/data/2.5/weather?q=',S);
+    urlbuild=strcat('http://api.openweathermap.org/data/2.5/weather?lat=',lat,'&lon=',lon);
     try
         result=urlread(urlbuild);
 
